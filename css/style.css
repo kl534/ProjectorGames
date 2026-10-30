@@ -1,0 +1,1099 @@
+/* Projector Games – sized for a projected image viewed from across a room. */
+
+:root {
+  --bg: #0b0d12;
+  --surface: #171b24;
+  --surface-hover: #212734;
+  --border: #2f3646;
+  --text: #f2f4f8;
+  --text-muted: #9aa3b5;
+  --accent: #ffb020;
+  --accent-text: #1a1200;
+  --ok: #3ddc84;
+  --warn-bg: #3a2a08;
+  --warn-text: #ffd27a;
+  --focus: #6cc4ff;
+  --radius: 14px;
+  --gap: clamp(12px, 2.2vmin, 28px);
+  --font-base: clamp(16px, 2.4vmin, 30px);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: var(--font-base);
+  line-height: 1.35;
+}
+
+body { overflow: hidden; }
+
+#app { height: 100%; }
+
+/* ---- Screens ---------------------------------------------------------- */
+
+.screen {
+  display: none;
+  height: 100%;
+  padding: calc(var(--gap) * 2);
+  flex-direction: column;
+  gap: var(--gap);
+  overflow: auto;
+}
+.screen.active { display: flex; }
+
+.screen-centered {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.screen-header { display: flex; flex-direction: column; gap: 0.3em; }
+.screen-footer { display: flex; gap: var(--gap); margin-top: auto; flex-wrap: wrap; }
+
+h1, h2 { margin: 0; line-height: 1.1; }
+h2 { font-size: 1.9em; }
+
+.title {
+  font-size: clamp(40px, 11vmin, 150px);
+  letter-spacing: -0.02em;
+  color: var(--accent);
+  margin-bottom: 0.3em;
+}
+
+.lead { margin: 0; color: var(--text-muted); font-size: 1.1em; }
+.narrow { max-width: 34em; }
+
+.hint {
+  color: var(--text-muted);
+  margin: 1.5em 0 0;
+  max-width: 40em;
+}
+
+kbd {
+  display: inline-block;
+  padding: 0 0.4em;
+  border: 1px solid var(--border);
+  border-bottom-width: 3px;
+  border-radius: 6px;
+  font: inherit;
+  font-size: 0.85em;
+  background: var(--surface);
+}
+
+.row { display: flex; gap: var(--gap); flex-wrap: wrap; align-items: center; }
+
+/* ---- Buttons & inputs ------------------------------------------------- */
+
+.btn {
+  font: inherit;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.6em 1.4em;
+  min-height: 2.6em;
+  cursor: pointer;
+  transition: background 120ms, transform 120ms, border-color 120ms;
+}
+.btn:hover:not(:disabled) { background: var(--surface-hover); }
+.btn:active:not(:disabled) { transform: scale(0.98); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+.btn-primary:hover:not(:disabled) { background: #ffc24d; }
+
+.btn-huge {
+  font-size: 1.5em;
+  min-width: 11em;
+  padding: 0.7em 1.6em;
+}
+
+.btn-dim {
+  background: transparent;
+  color: #777;
+  border-color: #333;
+}
+
+:focus-visible,
+.btn:focus-visible,
+select:focus-visible {
+  outline: 4px solid var(--focus);
+  outline-offset: 4px;
+}
+
+select {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.5em 0.8em;
+  min-height: 2.6em;
+  min-width: 0;
+  flex: 1 1 12em;
+}
+select:disabled { opacity: 0.5; }
+
+label { font-weight: 600; color: var(--text-muted); }
+
+/* ---- Main menu -------------------------------------------------------- */
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  align-items: stretch;
+}
+
+/* ---- Game selection --------------------------------------------------- */
+
+.notice {
+  margin: 0;
+  padding: 0.7em 1em;
+  border-radius: var(--radius);
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  font-weight: 600;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14em), 1fr));
+  gap: var(--gap);
+}
+
+.game-card {
+  font: inherit;
+  color: var(--text);
+  text-align: left;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.2em;
+  min-height: 9em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  cursor: pointer;
+}
+.game-card h3 { margin: 0; font-size: 1.4em; }
+.game-card p { margin: 0; color: var(--text-muted); }
+.game-card .badge {
+  margin-top: auto;
+  align-self: flex-start;
+  font-size: 0.8em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.25em 0.7em;
+  border-radius: 999px;
+  border: 2px solid currentColor;
+  color: var(--text-muted);
+}
+/* Grey out the contents rather than the card, so the focus ring stays bright. */
+.game-card[aria-disabled="true"] { cursor: not-allowed; background: #12151c; }
+.game-card[aria-disabled="true"] > * { opacity: 0.5; filter: grayscale(1); }
+
+/* ---- Camera preview --------------------------------------------------- */
+
+.setup-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(14em, 1fr);
+  gap: calc(var(--gap) * 1.5);
+  align-items: start;
+  flex: 1;
+  min-height: 0;
+}
+
+@media (max-width: 800px) {
+  .setup-layout { grid-template-columns: 1fr; }
+}
+
+.setup-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+.setup-controls > .btn { align-self: stretch; }
+
+.status {
+  margin: 0;
+  padding: 0.7em 1em;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 2px solid var(--border);
+  font-weight: 600;
+}
+.status.calibrated { border-color: var(--ok); }
+
+.camera-mode { margin: 0; color: var(--text-muted); }
+.camera-mode:empty { display: none; }
+
+.preview {
+  /* --ar (width / height of the camera picture) is set from JS once the camera starts. */
+  --ar: 1.7778;
+  --preview-height: 58vh;
+  position: relative;
+  aspect-ratio: var(--ar);
+  width: min(100%, calc(var(--ar) * var(--preview-height)));
+  background: #000;
+  border-radius: var(--radius);
+  border: 2px solid var(--border);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.preview-large { --preview-height: 62vh; align-self: center; }
+
+.preview video,
+.preview .outline {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.preview video { object-fit: fill; }
+.preview video:not(.live) { visibility: hidden; }
+
+.outline { pointer-events: none; }
+.outline polygon {
+  fill: rgba(61, 220, 132, 0.12);
+  stroke: var(--ok);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.outline:not(.show) { display: none; }
+
+.preview-message {
+  position: relative;
+  margin: 0;
+  padding: 1em;
+  text-align: center;
+  color: var(--text-muted);
+  max-width: 30em;
+}
+.preview-message.problem { color: var(--warn-text); font-weight: 600; }
+.preview-message:empty { display: none; }
+
+/* ---- Calibration pattern ---------------------------------------------- */
+
+#screen-calibrating {
+  position: fixed;
+  inset: 0;
+  padding: 0;
+  background: #000;
+  z-index: 10;
+  align-items: center;
+  justify-content: center;
+}
+
+.marker {
+  position: absolute;
+  width: 15vmin;
+  height: 15vmin;
+  background: #000;
+}
+.marker[data-corner="0"] { top: 0; left: 0; }
+.marker[data-corner="1"] { top: 0; right: 0; }
+.marker[data-corner="2"] { bottom: 0; right: 0; }
+.marker[data-corner="3"] { bottom: 0; left: 0; }
+.marker.lit { background: #fff; }
+
+/* Kept dim and unchanging so it doesn't confuse the corner search. */
+.calibrating-centre {
+  text-align: center;
+  color: #777;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap);
+}
+.calibrating-centre p { margin: 0; font-size: 1.4em; }
+
+/* Off-screen <video> used to grab frames during calibration. */
+.capture-video {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 2px;
+  height: 2px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---- Ball Test ---------------------------------------------------------- */
+
+/* A lit (not black) background, so the projector lights up the ball in flight. */
+.game-screen {
+  position: fixed;
+  inset: 0;
+  padding: 0;
+  z-index: 5;
+  background-color: #222836;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 10% 10%;
+}
+
+.hit-layer {
+  position: absolute;
+  inset: 0;
+  cursor: crosshair;
+  overflow: hidden;
+}
+
+.hit-mark {
+  position: absolute;
+  width: 5vmin;
+  height: 5vmin;
+  margin: -2.5vmin 0 0 -2.5vmin;
+  border-radius: 50%;
+  background: var(--mark, var(--accent));
+  box-shadow: 0 0 0 0.5vmin #fff, 0 0 2.5vmin var(--mark, var(--accent));
+  animation: hit-pop 250ms ease-out;
+  pointer-events: none;
+}
+/* A dark centre dot shows the exact spot. */
+.hit-mark::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1vmin;
+  height: 1vmin;
+  margin: -0.5vmin 0 0 -0.5vmin;
+  border-radius: 50%;
+  background: #111;
+}
+@keyframes hit-pop {
+  from { transform: scale(2.2); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.game-bar {
+  position: absolute;
+  top: 1.5vmin;
+  right: 1.5vmin;
+  max-width: min(32em, 45vw);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5em;
+  padding: 0.6em 0.8em;
+  border-radius: var(--radius);
+  background: rgba(11, 13, 18, 0.85);
+  font-size: 0.75em;
+  text-align: right;
+}
+.game-status p { margin: 0; color: var(--warn-text); font-weight: 600; }
+.game-status:empty { display: none; }
+.game-keys { margin: 0; color: var(--text-muted); }
+
+.btn-small {
+  font-size: 1em;
+  min-height: 2.2em;
+  padding: 0.3em 1em;
+}
+
+.debug-panel {
+  position: absolute;
+  right: 1.5vmin;
+  bottom: 1.5vmin;
+  width: min(34vw, 520px);
+  padding: 0.5em;
+  border-radius: var(--radius);
+  background: rgba(0, 0, 0, 0.9);
+  border: 2px solid var(--border);
+  font-size: 0.7em;
+}
+.debug-panel[hidden] { display: none; }
+.debug-panel canvas { display: block; width: 100%; height: auto; border-radius: 6px; }
+.debug-stats { margin: 0.4em 0 0; color: var(--text-muted); }
+
+/* An available game: a normal, inviting card. */
+.game-card:not([aria-disabled="true"]):hover { background: var(--surface-hover); border-color: var(--accent); }
+
+/* ---- Target Practice ---------------------------------------------------- */
+
+/* A night-time carnival shooting gallery. It never moves: anything that changed
+   on screen could be taken for a ball. Its colours are mid to dark, so the
+   targets stand out and a light ball is easy to see against all of it. */
+#screen-target-practice {
+  background: #2b2358 url("../img/carnival.svg") center / cover no-repeat;
+}
+
+/* Overlays let clicks through to the play area. These are shared with Balloon Pop (bp-), Brick Breaker (bb-) and Demolition Day (dd-). */
+.tp-hud, .tp-panel, .tp-countdown, .bp-hud, .bp-panel, .bp-countdown, .bb-hud, .bb-panel, .bb-countdown,
+.dd-hud, .dd-panel, .dd-countdown { pointer-events: none; }
+.tp-hud[hidden], .tp-panel[hidden], .tp-countdown[hidden], .tp-panel [hidden],
+.bp-hud[hidden], .bp-panel[hidden], .bp-countdown[hidden], .bp-panel [hidden],
+.bb-hud[hidden], .bb-panel[hidden], .bb-countdown[hidden], .bb-panel [hidden],
+.dd-hud[hidden], .dd-panel[hidden], .dd-countdown[hidden], .dd-panel [hidden] { display: none; }
+
+/* A bullseye: blue outer ring, gold middle ring, red centre. --r is its radius.
+   No white: a light-coloured ball must stand out against every ring, or the
+   camera loses sight of it just before it hits. */
+.target {
+  position: absolute;
+  width: calc(var(--r) * 2);
+  height: calc(var(--r) * 2);
+  margin: calc(var(--r) * -1) 0 0 calc(var(--r) * -1);
+  border-radius: 50%;
+  background: radial-gradient(circle closest-side,
+    #e8392e 0 31.8%, #1a1a1a 31.8% 33.3%, #e8a800 33.3% 65.2%, #1a1a1a 65.2% 66.7%, #2f74d6 66.7% 100%);
+  box-shadow: 0 0 0 0.5vmin #1a1a1a, 0 0 3vmin rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: target-pop 250ms cubic-bezier(0.3, 1.6, 0.6, 1);
+  pointer-events: none;
+}
+.target span {
+  max-width: calc(var(--r) * 1.3);
+  text-align: center;
+  line-height: 1;
+  font-size: calc(var(--r) * 0.3);
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: #fff;
+  -webkit-text-stroke: 0.35vmin #1a1a1a;
+  paint-order: stroke fill;
+}
+.target.burst { animation: target-burst 350ms ease-out forwards; }
+.target.fade { opacity: 0; transition: opacity 400ms ease-in; }
+@keyframes target-pop {
+  from { transform: scale(0.3); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes target-burst {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(1.5); opacity: 0; }
+}
+
+/* Where a throw missed: a soft mark that fades away. */
+.splat {
+  position: absolute;
+  width: 7vmin;
+  height: 7vmin;
+  margin: -3.5vmin 0 0 -3.5vmin;
+  border-radius: 50%;
+  background: radial-gradient(circle closest-side, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.35) 60%, transparent);
+  animation: splat 1200ms ease-out forwards;
+  pointer-events: none;
+}
+@keyframes splat {
+  0% { transform: scale(0.4); opacity: 0.9; }
+  20% { transform: scale(1); opacity: 0.9; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+/* "+25" floating up from a hit target. */
+.points-pop {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: 9vmin;
+  font-weight: 900;
+  color: #ffe066;
+  -webkit-text-stroke: 0.4vmin #1a1a1a;
+  paint-order: stroke fill;
+  animation: points-float 900ms ease-out forwards;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.points-pop[data-ring="0"] { color: #ff6b5e; font-size: 11vmin; }
+.points-pop[data-ring="2"] { color: #8fc2ff; }
+@keyframes points-float {
+  0% { transform: translate(-50%, -50%) scale(0.6); opacity: 1; }
+  20% { transform: translate(-50%, -60%) scale(1.1); opacity: 1; }
+  100% { transform: translate(-50%, calc(-50% - 12vmin)) scale(1); opacity: 0; }
+}
+
+/* Score and time, top left. */
+.tp-hud, .bp-hud, .bb-hud, .dd-hud {
+  position: absolute;
+  top: 1.5vmin;
+  left: 1.5vmin;
+  display: flex;
+  gap: 1.2em;
+  padding: 0.3em 0.8em;
+  border-radius: var(--radius);
+  background: rgba(11, 13, 18, 0.85);
+  font-size: 5vmin;
+  line-height: 1.2;
+}
+.tp-hud p, .bp-hud p, .bb-hud p, .dd-hud p { margin: 0; white-space: nowrap; }
+.tp-hud span, .bp-hud span, .bb-hud span, .dd-hud span { color: var(--text-muted); font-size: 0.55em; text-transform: uppercase; letter-spacing: 0.08em; }
+.tp-hud b, .bp-hud b, .bb-hud b, .dd-hud b { display: inline-block; min-width: 2ch; font-variant-numeric: tabular-nums; }
+.tp-score b, .bp-score b, .bb-score b, .dd-score b { color: var(--accent); }
+.tp-time.low b, .bb-time.low b, .dd-time.low b { color: #ff5c5c; }
+
+/* Title / results, above the Start target. */
+.tp-panel, .bp-panel, .bb-panel, .dd-panel {
+  position: absolute;
+  top: 3vmin;
+  left: 50%;
+  transform: translateX(-50%);
+  /* Without this, starting at the middle, it would wrap at half the screen width. */
+  width: max-content;
+  max-width: 90vw;
+  padding: 1.5vmin 5vmin 2vmin;
+  border-radius: var(--radius);
+  background: rgba(11, 13, 18, 0.85);
+  text-align: center;
+  font-size: 4vmin;
+}
+.tp-panel h2, .bp-panel h2, .bb-panel h2, .dd-panel h2 { margin: 0; font-size: 7vmin; line-height: 1.15; }
+.tp-panel p, .bp-panel p, .bb-panel p, .dd-panel p { margin: 0.3em 0 0; }
+.tp-result, .bp-result, .bb-result, .dd-result { font-size: 1.25em; font-weight: 800; color: var(--accent); }
+.tp-best, .bp-best, .bb-best, .dd-best { color: var(--text-muted); }
+.tp-panel.new-best .tp-best, .bp-panel.new-best .bp-best, .bb-panel.new-best .bb-best, .dd-panel.new-best .dd-best { color: var(--ok); font-weight: 800; }
+.tp-prompt, .bp-prompt, .bb-prompt, .dd-prompt { font-weight: 700; }
+
+/* 3, 2, 1, Go! – a fixed box, so the area the camera must ignore is known. */
+.tp-countdown, .bp-countdown, .bb-countdown, .dd-countdown {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 70vmin;
+  height: 40vmin;
+  margin: -20vmin 0 0 -35vmin;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tp-countdown span, .bp-countdown span, .bb-countdown span, .dd-countdown span {
+  font-size: 30vmin;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--accent);
+  -webkit-text-stroke: 1vmin #1a1a1a;
+  paint-order: stroke fill;
+  animation: count-pop 800ms ease-out forwards;
+}
+@keyframes count-pop {
+  0% { transform: scale(1.25); opacity: 0; }
+  15% { transform: scale(1); opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ---- Balloon Pop -------------------------------------------------------- */
+
+/* Balloons over a fairground at dusk. Like the carnival, it never moves and its
+   colours are mid to dark, so the balloons stand out and a light ball is easy
+   to see against all of it. */
+#screen-balloon-pop {
+  background: #2a2f63 url("../img/balloon-sky.svg") center / cover no-repeat;
+}
+
+/* A balloon: --r is half its width, --colour its colour. The body is the
+   element itself, so its box is what can be hit; the knot and string hang
+   below. Like the targets, there is no white in it, so a light ball stands
+   out against it. */
+.balloon {
+  --dark: color-mix(in srgb, var(--colour) 62%, #000);
+  position: absolute;
+  width: calc(var(--r) * 2);
+  height: calc(var(--r) * 2.4);
+  margin: calc(var(--r) * -1.2) 0 0 calc(var(--r) * -1);
+  border-radius: 50% 50% 48% 48% / 56% 56% 44% 44%;
+  background: radial-gradient(ellipse at 34% 28%,
+    color-mix(in srgb, var(--colour) 70%, #fff) 0 7%, var(--colour) 30%, var(--dark) 100%);
+  box-shadow: 0 0 0 0.4vmin #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+/* The knot. */
+.balloon::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: calc(var(--r) * 0.28);
+  height: calc(var(--r) * 0.2);
+  margin-left: calc(var(--r) * -0.14);
+  background: var(--dark);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+/* The string. */
+.balloon::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(100% + var(--r) * 0.2);
+  width: 0.3vmin;
+  height: calc(var(--r) * 0.7);
+  margin-left: -0.15vmin;
+  background: #8a90a8;
+  border-radius: 0.15vmin;
+}
+.balloon[data-kind="gold"] { box-shadow: 0 0 0 0.4vmin #1a1a1a, 0 0 3vmin rgba(255, 210, 80, 0.55); }
+/* Covers the knot and string, so the camera knows where they are. Not drawn. */
+.balloon-tail {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: calc(var(--r) * 0.3);
+  height: calc(var(--r) * 0.95);
+  margin-left: calc(var(--r) * -0.15);
+}
+.balloon.start-balloon { animation: balloon-inflate 300ms cubic-bezier(0.3, 1.5, 0.6, 1); }
+.balloon.pop, .balloon.start-balloon.pop { animation: balloon-pop 300ms ease-out forwards; }
+.balloon span {
+  text-align: center;
+  line-height: 1;
+  font-size: calc(var(--r) * 0.3);
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: #fff;
+  -webkit-text-stroke: 0.35vmin #1a1a1a;
+  paint-order: stroke fill;
+}
+@keyframes balloon-pop {
+  from { transform: scale(1); opacity: 1; }
+  40% { transform: scale(1.35); opacity: 0.8; }
+  to { transform: scale(1.5); opacity: 0; }
+}
+@keyframes balloon-inflate {
+  from { transform: scale(0.3); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Lives: a little balloon for each, greyed out once one has floated away. */
+.bp-lives b { display: inline-flex; gap: 0.25em; align-items: center; }
+.bp-life {
+  width: 0.55em;
+  height: 0.66em;
+  border-radius: 50% 50% 48% 48% / 56% 56% 44% 44%;
+  background: #e8392e;
+  box-shadow: 0 0 0 0.08em #1a1a1a;
+}
+.bp-life.lost { background: #3a3f4f; }
+
+/* ---- Brick Breaker ------------------------------------------------------ */
+
+/* A building site at night. Like the carnival, it never moves and its colours
+   are mid to dark, so the bricks stand out and a light ball is easy to see
+   against all of it. */
+#screen-brick-breaker {
+  background: #1b2547 url("../img/brick-yard.svg") center / cover no-repeat;
+}
+
+/* A brick: --colour is its colour. Its box is what can be hit, and it never
+   moves. Like the targets and balloons, there is no white in it, so a light
+   ball stands out against it. Cracks are drawn over it by data-cracks. */
+.brick {
+  --dark: color-mix(in srgb, var(--colour) 62%, #000);
+  position: absolute;
+  border-radius: 0.6vmin;
+  background: linear-gradient(color-mix(in srgb, var(--colour) 85%, #fff) 0 9%, var(--colour) 9% 88%, var(--dark) 88%);
+  box-shadow: 0 0 0 0.35vmin #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: brick-pop 250ms ease-out;
+  pointer-events: none;
+}
+.brick[data-kind="tough"] {
+  /* Darker rivets in the corners. */
+  background:
+    radial-gradient(circle at 6% 24%, var(--dark) 0 0.4vmin, transparent 0.45vmin),
+    radial-gradient(circle at 94% 24%, var(--dark) 0 0.4vmin, transparent 0.45vmin),
+    radial-gradient(circle at 6% 76%, var(--dark) 0 0.4vmin, transparent 0.45vmin),
+    radial-gradient(circle at 94% 76%, var(--dark) 0 0.4vmin, transparent 0.45vmin),
+    linear-gradient(color-mix(in srgb, var(--colour) 85%, #fff) 0 9%, var(--colour) 9% 88%, var(--dark) 88%);
+}
+.brick[data-kind="explosive"]::before {
+  content: "✸";
+  font-size: 5vmin;
+  line-height: 1;
+  color: #ffd23a;
+}
+.brick[data-kind="gold"] { box-shadow: 0 0 0 0.35vmin #1a1a1a, 0 0 2.5vmin rgba(255, 210, 80, 0.55); }
+/* Dark crack lines: more of them for more damage. */
+.brick::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: center / 100% 100% no-repeat;
+}
+.brick[data-cracks="1"]::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 50' preserveAspectRatio='none'%3E%3Cpath d='M58 0 L52 14 L60 22 L50 34 L55 50' fill='none' stroke='%231a1a1a' stroke-width='2.5' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+}
+.brick[data-cracks="2"]::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 50' preserveAspectRatio='none'%3E%3Cpath d='M58 0 L52 14 L60 22 L50 34 L55 50 M52 14 L34 18 L26 30 M60 22 L78 26 L84 40' fill='none' stroke='%231a1a1a' stroke-width='2.5' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+}
+.brick[data-cracks="3"]::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 50' preserveAspectRatio='none'%3E%3Cpath d='M58 0 L52 14 L60 22 L50 34 L55 50 M52 14 L34 18 L26 30 L10 34 M60 22 L78 26 L84 40 L100 42 M50 34 L38 42 L30 50' fill='none' stroke='%231a1a1a' stroke-width='2.5' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+}
+.brick[data-cracks="4"]::after,
+.brick[data-cracks="5"]::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 50' preserveAspectRatio='none'%3E%3Cpath d='M58 0 L52 14 L60 22 L50 34 L55 50 M52 14 L34 18 L26 30 L10 34 M60 22 L78 26 L84 40 L100 42 M50 34 L38 42 L30 50 M34 18 L28 4 M78 26 L88 12 L96 6 M26 30 L18 44 M84 40 L76 50' fill='none' stroke='%231a1a1a' stroke-width='2.5' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+}
+@keyframes brick-pop {
+  from { transform: scale(0.6); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* The Start / Play again brick: red, with its label in the middle. */
+.brick.start-brick {
+  border-radius: 1.4vmin;
+  box-shadow: 0 0 0 0.6vmin #1a1a1a, 0 0 3vmin rgba(255, 255, 255, 0.3);
+  animation: brick-inflate 300ms cubic-bezier(0.3, 1.5, 0.6, 1);
+}
+.brick.start-brick.pop { animation: brick-burst 300ms ease-out forwards; }
+.brick.start-brick span {
+  text-align: center;
+  line-height: 1;
+  font-size: min(14vmin, 8vw);
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: #fff;
+  -webkit-text-stroke: 0.6vmin #1a1a1a;
+  paint-order: stroke fill;
+}
+.brick.start-brick.long-label span { font-size: min(11vmin, 6.2vw); }
+@keyframes brick-inflate {
+  from { transform: scale(0.3); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes brick-burst {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(1.3); opacity: 0; }
+}
+
+/* Half of a broken brick, falling. Plain boxes: they must not spin, shrink or
+   fade, because the camera learns what they look like while they fall. */
+.brick-debris {
+  position: absolute;
+  background: var(--colour);
+  box-shadow: 0 0 0 0.35vmin #1a1a1a;
+  pointer-events: none;
+}
+.brick-debris.left { border-radius: 0.6vmin 0 0 0.6vmin; }
+.brick-debris.right { border-radius: 0 0.6vmin 0.6vmin 0; }
+
+/* An explosion's flash over the 3×3 bricks around it. Orange and yellow, never white. */
+.bb-boom {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 190, 40, 0.95), rgba(240, 100, 20, 0.75) 60%, rgba(200, 40, 10, 0));
+  animation: boom 400ms ease-out forwards;
+  pointer-events: none;
+}
+@keyframes boom {
+  from { transform: scale(0.5); opacity: 1; }
+  to { transform: scale(1.1); opacity: 0; }
+}
+
+/* Three figures instead of two, so smaller than the other games' score display:
+   the title panel in the middle must not cover it. */
+.bb-hud { font-size: 3.8vmin; gap: 1em; }
+
+/* Smaller than in the other games, as there can be many at once. */
+.bb-field .points-pop { font-size: 6vmin; }
+.bb-field .points-pop[data-ring="0"] { font-size: 8vmin; }
+
+/* ---- Demolition Day ----------------------------------------------------- */
+
+/* A construction site at dusk. Like the carnival, it never moves and its
+   colours are mid to dark, so the blocks stand out and a light ball is easy to
+   see against all of it. */
+#screen-demolition-day {
+  background: #2f5273 url("../img/demolition-site.svg") center / cover no-repeat;
+}
+
+/* A crate (the Start crate, and the ones balloons carry): --colour is its colour. Chunky and
+   cartoony: a thick dark outline, a light edge along the top and a shaded one along the
+   bottom. Like the targets, bricks and balloons, there is no white in it, so a light ball
+   stands out against it. The buildings are not made of these: they are drawn on the
+   canvases below. */
+.dd-block {
+  position: absolute;
+  border-radius: 0.8vmin;
+  background: var(--colour) no-repeat center / 100% 100%;
+  box-shadow: 0 0 0 0.4vmin #1a1a1a, inset 0 0.5vmin 0 rgba(255, 232, 190, 0.22), inset 0 -0.6vmin 0 rgba(0, 0, 0, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: 50% 100%;
+  pointer-events: none;
+}
+/* The city pops in all at once, and at the end the rest of it sinks into the dust and fades. */
+.dd-city.pop-in { animation: dd-pop 300ms ease-out; }
+.dd-city.collapse { animation: dd-collapse 1200ms ease-in forwards; }
+@keyframes dd-pop {
+  from { transform: scale(0.6); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes dd-collapse {
+  from { transform: scale(1, 1); opacity: 1; }
+  to { transform: scale(1.05, 0.35); opacity: 0; }
+}
+
+/* The city, the piles of rubble and the flying fragments are canvases over the whole play area:
+   the facades are drawn on the first (see js/demolition-day-art.js), and a slab that has come
+   loose falls as a canvas of its own with the (invisible) boxes the camera follows inside it. */
+.dd-city, .dd-rubble, .dd-fx {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 100%;
+  pointer-events: none;
+}
+.dd-slab {
+  position: absolute;
+  pointer-events: none;
+}
+.dd-slab canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.dd-slab i {
+  position: absolute;
+  visibility: hidden;
+}
+
+/* The meter: how much of the city is gone, with the target marked. */
+.dd-meter { position: relative; }
+.dd-meter-bar {
+  display: block;
+  position: relative;
+  height: 0.3em;
+  margin-top: 0.1em;
+  border-radius: 0.15em;
+  background: #2a2f3a;
+}
+.dd-meter-fill {
+  display: block;
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--fill, 0) * 1%);
+  border-radius: inherit;
+  background: var(--accent);
+}
+.dd-meter.reached .dd-meter-fill { background: var(--ok); }
+.dd-meter-mark {
+  display: block;
+  position: absolute;
+  top: -0.15em;
+  bottom: -0.15em;
+  left: calc(var(--target, 85) * 1%);
+  width: 0.14em;
+  margin-left: -0.07em;
+  background: #ffd23a;
+}
+
+/* Gold shines. */
+.dd-block[data-kind="gold"] { box-shadow: 0 0 0 0.4vmin #1a1a1a, 0 0 2.5vmin rgba(255, 210, 80, 0.55), inset 0 -0.6vmin 0 rgba(0, 0, 0, 0.22); }
+.dd-block span {
+  font-size: 2.5vmin;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: #e8b030;
+  -webkit-text-stroke: 0.35vmin #1a1a1a;
+  paint-order: stroke fill;
+}
+/* The pictures on the crates and the helicopter (generated: simple cartoon shapes, no white). */
+.dd-block[data-kind="tnt"] { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 70' preserveAspectRatio='none'%3E %3Crect width='100' height='70' fill='%23b3281f'/%3E %3Crect y='0' width='100' height='14' fill='%23a02219'/%3E%3Crect y='56' width='100' height='14' fill='%23a02219'/%3E %3Crect y='20' width='100' height='30' fill='%237d1912' opacity='0.75'/%3E %3Cpath d='M0 14H100M0 56H100M0 20H100M0 50H100' stroke='%234a0f0a' stroke-width='2.5'/%3E %3Cpath d='M8 14V56M92 14V56' stroke='%234a0f0a' stroke-width='3'/%3E %3Cg fill='%23e0a526'%3E%3Ccircle cx='6' cy='7' r='1.8'/%3E%3Ccircle cx='94' cy='7' r='1.8'/%3E%3Ccircle cx='6' cy='63' r='1.8'/%3E%3Ccircle cx='94' cy='63' r='1.8'/%3E%3C/g%3E %3C/svg%3E"); }
+.dd-block[data-kind="gold"] { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 70' preserveAspectRatio='none'%3E %3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23e8b923'/%3E%3Cstop offset='1' stop-color='%23bf8a0a'/%3E%3C/linearGradient%3E%3C/defs%3E %3Crect width='100' height='70' fill='url(%23g)'/%3E %3Crect x='6' y='6' width='88' height='58' rx='4' fill='none' stroke='%238f6606' stroke-width='3'/%3E %3Cpath d='M10 12L26 12L14 30L10 30Z' fill='%23e6c04a' opacity='0.8'/%3E %3Cpath d='M30 47Q30 20 50 20Q70 20 70 47Z' fill='%23e8761a' stroke='%231a1a1a' stroke-width='3' stroke-linejoin='round'/%3E %3Crect x='45' y='20' width='10' height='27' fill='%23f09a3c' stroke='%231a1a1a' stroke-width='2'/%3E %3Crect x='23' y='46' width='54' height='8' rx='3' fill='%23c9590c' stroke='%231a1a1a' stroke-width='3'/%3E %3C/svg%3E"); }
+
+.dd-heli { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 56' preserveAspectRatio='none'%3E %3Cdefs%3E%3CradialGradient id='r'%3E%3Cstop offset='0' stop-color='%231e2028' stop-opacity='0.75'/%3E%3Cstop offset='0.7' stop-color='%231e2028' stop-opacity='0.35'/%3E%3Cstop offset='1' stop-color='%231e2028' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E %3Cellipse cx='98' cy='7' rx='60' ry='6' fill='url(%23r)'/%3E %3Crect x='94' y='8' width='8' height='9' fill='%232a2d36'/%3E %3Cpath d='M64 30L14 26L14 34L64 41Z' fill='%23d27a14' stroke='%231a1a1a' stroke-width='3' stroke-linejoin='round'/%3E %3Cpath d='M22 27L8 9L13 8L18 27Z' fill='%23b8650c' stroke='%231a1a1a' stroke-width='3' stroke-linejoin='round'/%3E %3Cellipse cx='10' cy='20' rx='3.5' ry='10' fill='%231e2028' opacity='0.55'/%3E %3Cellipse cx='98' cy='34' rx='40' ry='20' fill='%23e08a1e' stroke='%231a1a1a' stroke-width='3.5'/%3E %3Cpath d='M108 22Q130 22 136 34L108 36Z' fill='%232f7f9c' stroke='%231a1a1a' stroke-width='3' stroke-linejoin='round'/%3E %3Cpath d='M70 40Q98 48 128 40' fill='none' stroke='%23b8650c' stroke-width='4'/%3E %3Cpath d='M60 52H140M80 52V46M118 52V46' stroke='%231a1a1a' stroke-width='3.5' stroke-linecap='round'/%3E %3C/svg%3E"); }
+
+
+/* The Start / Play again crate: a giant TNT crate with warning stripes top and bottom. */
+.dd-block.dd-start {
+  border-radius: 1.6vmin;
+  box-shadow: 0 0 0 0.7vmin #1a1a1a, 0 0 3vmin rgba(240, 170, 60, 0.35);
+  background-image:
+    repeating-linear-gradient(-45deg, #1a1a1a 0 2.2vmin, #d9a02a 2.2vmin 4.4vmin),
+    repeating-linear-gradient(-45deg, #1a1a1a 0 2.2vmin, #d9a02a 2.2vmin 4.4vmin),
+    linear-gradient(#b3281f, #8f1f17);
+  background-size: 100% 14%, 100% 14%, 100% 100%;
+  background-position: top, bottom, center;
+  transform-origin: 50% 50%;
+  animation: dd-inflate 300ms cubic-bezier(0.3, 1.5, 0.6, 1);
+}
+.dd-block.dd-start.pop { animation: dd-burst 300ms ease-out forwards; }
+.dd-block.dd-start span {
+  font-size: min(14vmin, 8vw);
+  letter-spacing: 0.05em;
+  color: #ffd23a;
+  -webkit-text-stroke: 0.7vmin #1a1a1a;
+}
+.dd-block.dd-start.long-label span { font-size: min(11vmin, 6.2vw); }
+@keyframes dd-inflate {
+  from { transform: scale(0.3); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes dd-burst {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(1.3); opacity: 0; }
+}
+
+/* A puff of dust, in mid browns so a light ball stands out against it. */
+.dd-dust, .dd-cloud {
+  position: absolute;
+  background:
+    radial-gradient(closest-side at 28% 62%, rgba(150, 136, 112, 0.92) 0 85%, transparent 100%) 0 0 / 55% 70% no-repeat,
+    radial-gradient(closest-side at 72% 58%, rgba(140, 127, 104, 0.92) 0 85%, transparent 100%) 100% 10% / 58% 75% no-repeat,
+    radial-gradient(closest-side at 50% 40%, rgba(160, 146, 121, 0.92) 0 85%, transparent 100%) 50% 0 / 62% 80% no-repeat,
+    radial-gradient(closest-side at 50% 72%, rgba(132, 119, 98, 0.92) 0 85%, transparent 100%) 50% 100% / 70% 60% no-repeat;
+  animation: dd-puff 650ms ease-out forwards;
+  pointer-events: none;
+}
+.dd-cloud { animation: dd-cloud 1300ms ease-out both; }
+@keyframes dd-puff {
+  from { transform: scale(0.4); opacity: 0.95; }
+  to { transform: scale(1.25); opacity: 0; }
+}
+@keyframes dd-cloud {
+  0% { transform: scale(0.5); opacity: 0; }
+  25% { transform: scale(0.9); opacity: 0.95; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
+/* The flash of a throw, and of an explosion over the 3×3 cells around it. Orange and yellow, never white. */
+.dd-blast {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 205, 80, 0.95), rgba(240, 120, 30, 0.7) 55%, rgba(200, 50, 10, 0));
+  animation: dd-blast 350ms ease-out forwards;
+  pointer-events: none;
+}
+@keyframes dd-blast {
+  from { transform: scale(0.5); opacity: 1; }
+  to { transform: scale(1.2); opacity: 0; }
+}
+.dd-boom {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 190, 40, 0.95), rgba(240, 100, 20, 0.75) 60%, rgba(200, 40, 10, 0));
+  animation: boom 450ms ease-out forwards;
+  pointer-events: none;
+}
+
+/* The crane: a lattice tower left of the city and a jib over it, drawn once.
+   The trolley is where the load's cable hangs from. */
+.dd-crane-tower, .dd-crane-jib {
+  position: absolute;
+  background:
+    repeating-linear-gradient(45deg, transparent 0 3.2vmin, #7a520c 3.2vmin 3.7vmin),
+    repeating-linear-gradient(-45deg, transparent 0 3.2vmin, #7a520c 3.2vmin 3.7vmin),
+    #c28418;
+  box-shadow: 0 0 0 0.4vmin #1a1a1a;
+  pointer-events: none;
+}
+.dd-crane-trolley {
+  position: absolute;
+  background: #4a4f5c;
+  box-shadow: 0 0 0 0.35vmin #1a1a1a;
+  border-radius: 0.4vmin;
+  pointer-events: none;
+}
+/* The cable is a thin line that turns about its top (the only thing in the game that rotates). */
+.dd-cable {
+  position: absolute;
+  background: #20232b;
+  transform-origin: 50% 0;
+  pointer-events: none;
+}
+/* The load keeps its shape while it swings: a wrecking ball or a pallet of concrete. */
+.dd-load {
+  position: absolute;
+  box-shadow: 0 0 0 0.4vmin #1a1a1a;
+  pointer-events: none;
+}
+.dd-ball {
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #7b8290, #3b414d 55%, #262a33);
+}
+.dd-ball::before {
+  content: "";
+  position: absolute;
+  left: 38%;
+  top: -14%;
+  width: 24%;
+  height: 18%;
+  border: 0.55vmin solid #1a1a1a;
+  border-radius: 50%;
+  background: transparent;
+}
+.dd-pallet {
+  border-radius: 0.5vmin;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 18%, rgba(40, 44, 52, 0.55) 18% 20%),
+    linear-gradient(#9099a2 0 68%, #6b4a2a 68%);
+}
+
+/* A balloon: shaded in its own colour, with a string to a crate. */
+.dd-balloon {
+  position: absolute;
+  border-radius: 50% 50% 48% 48% / 56% 56% 44% 44%;
+  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--colour) 72%, #fff), var(--colour) 52%, color-mix(in srgb, var(--colour) 60%, #000));
+  box-shadow: 0 0 0 0.4vmin #1a1a1a;
+  pointer-events: none;
+}
+.dd-balloon.pop { animation: dd-balloon-pop 300ms ease-out forwards; }
+@keyframes dd-balloon-pop {
+  from { transform: scale(1); opacity: 1; }
+  40% { transform: scale(1.35); opacity: 0.8; }
+  to { transform: scale(1.5); opacity: 0; }
+}
+.dd-string, .dd-rope {
+  position: absolute;
+  background: #20232b;
+  pointer-events: none;
+}
+/* A crate carried by a balloon is a small block. */
+.dd-crate { border-radius: 0.5vmin; }
+
+/* The rebuild helicopter: a cartoon helicopter whose rotor is a constant dark blur, so it never changes shape. */
+.dd-heli {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100% 100%;
+  pointer-events: none;
+}
+/* It faces the way it flies; that is settled when it appears and never changes. */
+.dd-heli.flip { transform: scaleX(-1); }
+.dd-star {
+  position: absolute;
+  background: var(--colour);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  animation: dd-star 700ms ease-out forwards;
+  pointer-events: none;
+}
+@keyframes dd-star {
+  from { transform: scale(0.3) rotate(0deg); opacity: 1; }
+  to { transform: scale(1.4) rotate(120deg); opacity: 0; }
+}
+
+/* Three figures instead of two, so smaller than the other games' score display:
+   the title panel in the middle must not cover it. */
+.dd-hud { font-size: 3.8vmin; gap: 1em; }
+
+/* Smaller than in the other games, as there can be many at once. */
+.dd-field .points-pop { font-size: 6vmin; }
+.dd-field .points-pop[data-ring="0"] { font-size: 8vmin; }

@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projector Games</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7' fill='%23ffb020'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/main.js"></script>
+</head>
+<body>
+  <main id="app">
+    <!-- Start: one click/key press is needed before the browser allows full screen. -->
+    <section class="screen screen-centered active" id="screen-start" data-screen="start">
+      <h1 class="title">Projector Games</h1>
+      <button class="btn btn-primary btn-huge" id="btn-start" autofocus>Start (full screen)</button>
+      <p class="hint">Drag this window onto the projector first. Press <kbd>F</kbd> at any time to switch full screen on or off.</p>
+    </section>
+
+    <section class="screen screen-centered" id="screen-menu" data-screen="menu">
+      <h1 class="title">Projector Games</h1>
+      <nav class="menu" aria-label="Main menu">
+        <button class="btn btn-primary btn-huge" data-action="play">Play</button>
+        <button class="btn btn-huge" data-action="setup">Setup &amp; calibration</button>
+      </nav>
+      <p class="hint">Arrow keys and <kbd>Enter</kbd> to choose · <kbd>F</kbd> full screen · <kbd>Esc</kbd> leaves full screen · close the tab to quit</p>
+    </section>
+
+    <section class="screen" id="screen-games" data-screen="games">
+      <header class="screen-header">
+        <h2>Choose a game</h2>
+      </header>
+      <p class="notice" id="games-notice" hidden>Screen not calibrated yet – go to Setup &amp; calibration.</p>
+      <div class="game-grid" id="game-grid"></div>
+      <footer class="screen-footer">
+        <button class="btn" data-action="back">Back</button>
+      </footer>
+    </section>
+
+    <section class="screen" id="screen-setup" data-screen="setup">
+      <header class="screen-header">
+        <h2>Setup &amp; calibration</h2>
+      </header>
+      <div class="setup-layout">
+        <div class="preview" id="setup-preview">
+          <video id="setup-video" muted playsinline autoplay></video>
+          <svg class="outline" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true">
+            <polygon points=""></polygon>
+          </svg>
+          <p class="preview-message" id="camera-message" role="status">Starting camera…</p>
+        </div>
+        <div class="setup-controls">
+          <label for="camera-select">Camera</label>
+          <div class="row">
+            <select id="camera-select"></select>
+            <button class="btn" id="btn-refresh">Refresh</button>
+          </div>
+          <p class="camera-mode" id="camera-mode"></p>
+          <p class="status" id="calibration-status" role="status">Not calibrated</p>
+          <button class="btn btn-primary" id="btn-calibrate" disabled>Calibrate</button>
+          <button class="btn" data-action="back">Back</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Calibration pattern: fills the projected image; markers light up one corner at a time. -->
+    <section class="screen" id="screen-calibrating" data-screen="calibrating">
+      <div class="marker" data-corner="0"></div>
+      <div class="marker" data-corner="1"></div>
+      <div class="marker" data-corner="2"></div>
+      <div class="marker" data-corner="3"></div>
+      <div class="calibrating-centre">
+        <p>Finding the screen corners…</p>
+        <button class="btn btn-dim" id="btn-cal-cancel">Cancel</button>
+      </div>
+    </section>
+
+    <section class="screen" id="screen-cal-check" data-screen="check">
+      <header class="screen-header">
+        <h2>Check the screen outline</h2>
+        <p class="lead">The green outline should run along the edges of the projected screen.</p>
+      </header>
+      <div class="preview preview-large" id="check-preview">
+        <video id="check-video" muted playsinline autoplay></video>
+        <svg class="outline" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true">
+          <polygon points=""></polygon>
+        </svg>
+      </div>
+      <footer class="screen-footer">
+        <button class="btn btn-primary" id="btn-cal-save">Save</button>
+        <button class="btn" id="btn-cal-redo">Redo</button>
+      </footer>
+    </section>
+
+    <!-- Shown instead of a game when the screen hasn't been calibrated. -->
+    <section class="screen screen-centered" id="screen-needs-calibration" data-screen="needs-calibration">
+      <h2>Calibrate the screen first</h2>
+      <p class="lead narrow">The games need to know where the projected screen is in the camera picture. Run Setup &amp; calibration, then try again.</p>
+      <div class="row">
+        <button class="btn btn-primary" data-action="setup">Go to Setup &amp; calibration</button>
+        <button class="btn" data-action="back">Back</button>
+      </div>
+    </section>
+
+    <!-- Ball Test: marks appear where balls hit. Nothing here takes focus, so balls never "press" anything. -->
+    <section class="screen game-screen" id="screen-ball-test" data-screen="ball-test" data-no-focus>
+      <div class="hit-layer" aria-label="Play area – click to mark a hit"></div>
+      <div class="game-bar">
+        <div class="game-status" role="status"></div>
+        <div class="row">
+          <button class="btn btn-small" id="btn-ball-clear">Clear</button>
+          <button class="btn btn-small" data-action="back">Exit</button>
+        </div>
+        <p class="game-keys"><kbd>C</kbd> clear · <kbd>D</kbd> camera view · <kbd>Esc</kbd> exit</p>
+      </div>
+      <div class="debug-panel" hidden>
+        <canvas aria-label="Camera view: red shows movement, blue the moving things the game knows about, yellow the ball’s path, green the screen edge"></canvas>
+        <p class="debug-stats"></p>
+      </div>
+      <video class="capture-video" muted playsinline aria-hidden="true"></video>
+    </section>
+
+    <!-- Target Practice. Like Ball Test, nothing here takes focus. -->
+    <section class="screen game-screen" id="screen-target-practice" data-screen="target-practice" data-no-focus>
+      <div class="hit-layer tp-field" aria-label="Play area – click to throw"></div>
+      <div class="tp-hud" hidden>
+        <p class="tp-score"><span>Score</span> <b>0</b></p>
+        <p class="tp-time"><span>Time</span> <b>60</b></p>
+      </div>
+      <div class="tp-panel" hidden>
+        <h2 class="tp-title"></h2>
+        <p class="tp-result" hidden></p>
+        <p class="tp-best"></p>
+        <p class="tp-prompt"></p>
+      </div>
+      <div class="tp-countdown" hidden></div>
+      <div class="game-bar">
+        <div class="game-status" role="status"></div>
+        <div class="row">
+          <button class="btn btn-small" data-action="back">Exit</button>
+        </div>
+        <p class="game-keys"><kbd>Enter</kbd> start · <kbd>D</kbd> camera view · <kbd>Esc</kbd> exit</p>
+      </div>
+      <div class="debug-panel" hidden>
+        <canvas aria-label="Camera view: red shows movement, blue the moving things the game knows about, yellow the ball’s path, green the screen edge"></canvas>
+        <p class="debug-stats"></p>
+      </div>
+      <video class="capture-video" muted playsinline aria-hidden="true"></video>
+    </section>
+
+    <!-- Balloon Pop. Like Ball Test, nothing here takes focus. -->
+    <section class="screen game-screen" id="screen-balloon-pop" data-screen="balloon-pop" data-no-focus>
+      <div class="hit-layer bp-field" aria-label="Play area – click to throw"></div>
+      <div class="bp-hud" hidden>
+        <p class="bp-score"><span>Score</span> <b>0</b></p>
+        <p class="bp-lives"><span>Lives</span> <b></b></p>
+      </div>
+      <div class="bp-panel" hidden>
+        <h2 class="bp-title"></h2>
+        <p class="bp-result" hidden></p>
+        <p class="bp-best"></p>
+        <p class="bp-prompt"></p>
+      </div>
+      <div class="bp-countdown" hidden></div>
+      <div class="game-bar">
+        <div class="game-status" role="status"></div>
+        <div class="row">
+          <button class="btn btn-small" data-action="back">Exit</button>
+        </div>
+        <p class="game-keys"><kbd>Enter</kbd> start · <kbd>D</kbd> camera view · <kbd>Esc</kbd> exit</p>
+      </div>
+      <div class="debug-panel" hidden>
+        <canvas aria-label="Camera view: red shows movement, blue the moving things the game knows about, yellow the ball’s path, green the screen edge"></canvas>
+        <p class="debug-stats"></p>
+      </div>
+      <video class="capture-video" muted playsinline aria-hidden="true"></video>
+    </section>
+
+    <!-- Brick Breaker. Like Ball Test, nothing here takes focus. -->
+    <section class="screen game-screen" id="screen-brick-breaker" data-screen="brick-breaker" data-no-focus>
+      <div class="hit-layer bb-field" aria-label="Play area – click to throw"></div>
+      <div class="bb-hud" hidden>
+        <p class="bb-score"><span>Score</span> <b>0</b></p>
+        <p class="bb-level"><span>Level</span> <b>1</b></p>
+        <p class="bb-time"><span>Time</span> <b>75</b></p>
+      </div>
+      <div class="bb-panel" hidden>
+        <h2 class="bb-title"></h2>
+        <p class="bb-result" hidden></p>
+        <p class="bb-best"></p>
+        <p class="bb-prompt"></p>
+      </div>
+      <div class="bb-countdown" hidden></div>
+      <div class="game-bar">
+        <div class="game-status" role="status"></div>
+        <div class="row">
+          <button class="btn btn-small" data-action="back">Exit</button>
+        </div>
+        <p class="game-keys"><kbd>Enter</kbd> start · <kbd>D</kbd> camera view · <kbd>Esc</kbd> exit</p>
+      </div>
+      <div class="debug-panel" hidden>
+        <canvas aria-label="Camera view: red shows movement, blue the moving things the game knows about, yellow the ball’s path, green the screen edge"></canvas>
+        <p class="debug-stats"></p>
+      </div>
+      <video class="capture-video" muted playsinline aria-hidden="true"></video>
+    </section>
+
+    <!-- Demolition Day. Like Ball Test, nothing here takes focus. -->
+    <section class="screen game-screen" id="screen-demolition-day" data-screen="demolition-day" data-no-focus>
+      <div class="hit-layer dd-field" aria-label="Play area – click to throw"></div>
+      <div class="dd-hud" hidden>
+        <p class="dd-score"><span>Score</span> <b>0</b></p>
+        <p class="dd-level"><span>Level</span> <b>1</b></p>
+        <p class="dd-time"><span>Time</span> <b>60</b></p>
+        <p class="dd-meter"><span>Demolished</span> <b>0</b>%<i class="dd-meter-bar"><i class="dd-meter-fill"></i><i class="dd-meter-mark"></i></i></p>
+      </div>
+      <div class="dd-panel" hidden>
+        <h2 class="dd-title"></h2>
+        <p class="dd-result" hidden></p>
+        <p class="dd-best"></p>
+        <p class="dd-prompt"></p>
+      </div>
+      <div class="dd-countdown" hidden></div>
+      <div class="game-bar">
+        <div class="game-status" role="status"></div>
+        <div class="row">
+          <button class="btn btn-small" data-action="back">Exit</button>
+        </div>
+        <p class="game-keys"><kbd>Enter</kbd> start · <kbd>D</kbd> camera view · <kbd>Esc</kbd> exit</p>
+      </div>
+      <div class="debug-panel" hidden>
+        <canvas aria-label="Camera view: red shows movement, blue the moving things the game knows about, yellow the ball’s path, green the screen edge"></canvas>
+        <p class="debug-stats"></p>
+      </div>
+      <video class="capture-video" muted playsinline aria-hidden="true"></video>
+    </section>
+
+    <section class="screen screen-centered" id="screen-cal-failed" data-screen="failed">
+      <h2>Calibration didn’t work</h2>
+      <p class="lead narrow">Couldn't find all four corners. Make sure the camera can see the whole projected screen and the room isn't too bright, then try again.</p>
+      <div class="row">
+        <button class="btn btn-primary" id="btn-cal-retry">Try again</button>
+        <button class="btn" id="btn-cal-fail-cancel">Cancel</button>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
