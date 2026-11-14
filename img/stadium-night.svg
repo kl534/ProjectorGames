@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <!-- Golden Boot's background: a floodlit stadium at night, seen from behind the penalty spot.
+       The game draws the real picture in 3D over it; this is what shows before that is ready.
+       Mid to dark colours, nothing white. -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0a1028"/>
+      <stop offset="1" stop-color="#1d2540"/>
+    </linearGradient>
+    <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a5a31"/>
+      <stop offset="1" stop-color="#306738"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <rect y="230" width="1600" height="310" fill="#2c303d"/>
+  <rect y="230" width="1600" height="150" fill="#4a3a48" opacity="0.5"/>
+  <rect y="540" width="1600" height="40" fill="#5a3f4f"/>
+  <rect y="580" width="1600" height="320" fill="url(#grass)"/>
+  <rect x="595" y="400" width="410" height="180" fill="none" stroke="#868b92" stroke-width="8"/>
+  <g fill="#d9c88a" opacity="0.8">
+    <circle cx="500" cy="70" r="10"/><circle cx="800" cy="70" r="10"/><circle cx="1100" cy="70" r="10"/>
+  </g>
+</svg>

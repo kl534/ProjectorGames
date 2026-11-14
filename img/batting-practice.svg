@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <!-- Batting Practice's background: a ballpark at night seen from behind home plate, with the dark column the
+       numbers go in down the right-hand third. The game draws the real picture in 3D over it; this is what
+       shows before that is ready. Mid to dark colours, so a light ball stands out. -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0a0f24"/>
+      <stop offset="1" stop-color="#26335e"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#f1d68a" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#f1d68a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <g fill="url(#glow)">
+    <circle cx="260" cy="110" r="150"/>
+    <circle cx="1340" cy="110" r="150"/>
+  </g>
+  <g fill="#3b3f4a">
+    <rect x="254" y="120" width="12" height="440"/>
+    <rect x="1334" y="120" width="12" height="440"/>
+    <rect x="210" y="80" width="100" height="44"/>
+    <rect x="1290" y="80" width="100" height="44"/>
+  </g>
+  <g fill="#f1d68a">
+    <rect x="218" y="86" width="18" height="14"/><rect x="242" y="86" width="18" height="14"/>
+    <rect x="266" y="86" width="18" height="14"/><rect x="290" y="86" width="14" height="14"/>
+    <rect x="1298" y="86" width="18" height="14"/><rect x="1322" y="86" width="18" height="14"/>
+    <rect x="1346" y="86" width="18" height="14"/><rect x="1370" y="86" width="14" height="14"/>
+  </g>
+  <!-- The stands, filled with people, rising to the sky. -->
+  <path d="M0 520 L0 300 Q800 180 1600 300 L1600 520 Z" fill="#2a2d3a"/>
+  <path d="M0 520 L0 400 Q800 330 1600 400 L1600 520 Z" fill="#3a3e4c" opacity="0.6"/>
+  <g fill="#7b3b3b" opacity="0.7">
+    <circle cx="300" cy="400" r="8"/><circle cx="520" cy="360" r="8"/><circle cx="700" cy="350" r="8"/>
+    <circle cx="900" cy="350" r="8"/><circle cx="1080" cy="360" r="8"/><circle cx="1300" cy="400" r="8"/>
+  </g>
+  <!-- The outfield wall with its yellow top, and the grass. -->
+  <path d="M0 540 Q800 500 1600 540 L1600 580 L0 580 Z" fill="#1d4434"/>
+  <path d="M0 540 Q800 500 1600 540" fill="none" stroke="#d9a520" stroke-width="5"/>
+  <rect y="570" width="1600" height="330" fill="#2c5b31"/>
+  <path d="M0 640 Q800 600 1600 640 L1600 700 L0 700 Z" fill="#346a39" opacity="0.6"/>
+  <!-- The infield dirt, and the foul lines running out from home plate. -->
+  <path d="M520 900 Q800 640 1080 900 Z" fill="#8a5a3a"/>
+  <path d="M-300 900 L760 580" stroke="#cfcabb" stroke-width="5" fill="none"/>
+  <path d="M1900 900 L840 580" stroke="#cfcabb" stroke-width="5" fill="none"/>
+  <rect x="1040" width="560" height="900" fill="#0d1220"/>
+  <rect x="1036" width="4" height="900" fill="#2f3646"/>
+</svg>
