@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Lens calibration checkerboard for letter paper, landscape: 10 x 7 squares of 24 mm (9 x 6 inner corners).
+     Print at 100% (Actual size, no fit-to-page) on a laser printer, then check the 100 mm bar with a ruler. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="279.4mm" height="215.9mm" viewBox="0 0 279.4 215.9">
+<rect width="279.4" height="215.9" fill="#fff"/>
+<g fill="#000"><rect x="19.7" y="14" width="24" height="24"/><rect x="67.7" y="14" width="24" height="24"/><rect x="115.7" y="14" width="24" height="24"/><rect x="163.7" y="14" width="24" height="24"/><rect x="211.7" y="14" width="24" height="24"/><rect x="43.7" y="38" width="24" height="24"/><rect x="91.7" y="38" width="24" height="24"/><rect x="139.7" y="38" width="24" height="24"/><rect x="187.7" y="38" width="24" height="24"/><rect x="235.7" y="38" width="24" height="24"/><rect x="19.7" y="62" width="24" height="24"/><rect x="67.7" y="62" width="24" height="24"/><rect x="115.7" y="62" width="24" height="24"/><rect x="163.7" y="62" width="24" height="24"/><rect x="211.7" y="62" width="24" height="24"/><rect x="43.7" y="86" width="24" height="24"/><rect x="91.7" y="86" width="24" height="24"/><rect x="139.7" y="86" width="24" height="24"/><rect x="187.7" y="86" width="24" height="24"/><rect x="235.7" y="86" width="24" height="24"/><rect x="19.7" y="110" width="24" height="24"/><rect x="67.7" y="110" width="24" height="24"/><rect x="115.7" y="110" width="24" height="24"/><rect x="163.7" y="110" width="24" height="24"/><rect x="211.7" y="110" width="24" height="24"/><rect x="43.7" y="134" width="24" height="24"/><rect x="91.7" y="134" width="24" height="24"/><rect x="139.7" y="134" width="24" height="24"/><rect x="187.7" y="134" width="24" height="24"/><rect x="235.7" y="134" width="24" height="24"/><rect x="19.7" y="158" width="24" height="24"/><rect x="67.7" y="158" width="24" height="24"/><rect x="115.7" y="158" width="24" height="24"/><rect x="163.7" y="158" width="24" height="24"/><rect x="211.7" y="158" width="24" height="24"/></g>
+<g fill="#000" font-family="sans-serif" font-size="3.5">
+<rect x="19.7" y="194" width="100" height="2"/>
+<rect x="19.7" y="192" width="0.4" height="6"/><rect x="119.3" y="192" width="0.4" height="6"/>
+<text x="123.7" y="196.5">The bar is 100 mm: measure it. Squares 24 mm.</text>
+<text x="123.7" y="201.5">Print at 100% on a laser printer: inkjet black can vanish in IR.</text>
+</g>
+</svg>

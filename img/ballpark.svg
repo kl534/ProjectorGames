@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <!-- Fielder's Choice: a ballpark at night, seen from the outfield. Mid to dark colours, so a light ball stands out. -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0a0f24"/>
+      <stop offset="1" stop-color="#26335e"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#f1d68a" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#f1d68a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <g fill="url(#glow)">
+    <circle cx="180" cy="140" r="140"/>
+    <circle cx="1420" cy="140" r="140"/>
+  </g>
+  <g fill="#3b3f4a">
+    <rect x="174" y="150" width="12" height="300"/>
+    <rect x="1414" y="150" width="12" height="300"/>
+    <rect x="130" y="110" width="100" height="44"/>
+    <rect x="1370" y="110" width="100" height="44"/>
+  </g>
+  <g fill="#f1d68a">
+    <rect x="138" y="116" width="18" height="14"/><rect x="162" y="116" width="18" height="14"/>
+    <rect x="186" y="116" width="18" height="14"/><rect x="210" y="116" width="14" height="14"/>
+    <rect x="1378" y="116" width="18" height="14"/><rect x="1402" y="116" width="18" height="14"/>
+    <rect x="1426" y="116" width="18" height="14"/><rect x="1450" y="116" width="14" height="14"/>
+  </g>
+  <path d="M0 330 Q800 250 1600 330 L1600 520 L0 520 Z" fill="#2a2d3a"/>
+  <path d="M0 470 Q800 420 1600 470 L1600 520 L0 520 Z" fill="#1d4434"/>
+  <path d="M0 470 Q800 420 1600 470" fill="none" stroke="#d9a520" stroke-width="5"/>
+  <rect y="505" width="1600" height="395" fill="#2c5b31"/>
+  <g fill="#346a39">
+    <rect x="0" y="505" width="200" height="395"/><rect x="400" y="505" width="200" height="395"/>
+    <rect x="800" y="505" width="200" height="395"/><rect x="1200" y="505" width="200" height="395"/>
+  </g>
+  <path d="M800 610 L1180 760 L800 900 L420 760 Z" fill="#8a5a3a"/>
+  <path d="M800 660 L1080 760 L800 880 L520 760 Z" fill="#2c5b31"/>
+  <ellipse cx="800" cy="765" rx="60" ry="22" fill="#94613f"/>
+  <g fill="#b9b29f">
+    <path d="M800 600 l16 8 l-16 8 l-16 -8 Z"/>
+    <path d="M1180 752 l16 8 l-16 8 l-16 -8 Z"/>
+    <path d="M420 752 l16 8 l-16 8 l-16 -8 Z"/>
+  </g>
+</svg>

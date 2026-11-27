@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <!-- Strike Zone's background: the plate at night seen from the mound, the backstop wall behind it and the grass
+       either side. The game draws the real picture in 3D over it; this is what shows before that is ready.
+       Mid to dark colours, so a light ball stands out. -->
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#143a2b"/>
+      <stop offset="1" stop-color="#1d4a36"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="#0d1224"/>
+  <rect y="0" width="1600" height="40" fill="#9a7418"/>
+  <rect y="40" width="1600" height="300" fill="url(#wall)"/>
+  <rect y="340" width="1600" height="300" fill="#245a2c"/>
+  <path d="M0 640 L1600 640 L1600 900 L0 900 Z" fill="#8a5a3a"/>
+  <path d="M520 900 L560 800 L1040 800 L1080 900 Z" fill="#7a4e30"/>
+  <path d="M640 900 L660 840 L940 840 L960 900 Z" fill="#6a6f7d"/>
+</svg>
